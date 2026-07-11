@@ -15,10 +15,10 @@ spec:
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: nose2-tests
+  name: nose-tests
 spec:
   steps:
-    - name: nose2-tests
+    - name: run-nose-tests
       image: python:3.11
       script: |
         #!/bin/sh
