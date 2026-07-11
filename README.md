@@ -1,4 +1,4 @@
-# Final Project
+# ci-cd-final-project
 
 This project demonstrates a complete CI/CD pipeline using GitHub Actions, Tekton, and OpenShift.
 
