@@ -1,0 +1,26 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: cleanup
+spec:
+  steps:
+    - name: cleanup
+      image: alpine
+      script: |
+        #!/bin/sh
+        echo "Cleaning workspace"
+
+---
+
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: nose2-tests
+spec:
+  steps:
+    - name: nose2-tests
+      image: python:3.11
+      script: |
+        #!/bin/sh
+        pip install -r requirements.txt
+        nose2
