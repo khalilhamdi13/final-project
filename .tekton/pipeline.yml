@@ -1,0 +1,35 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: ci-cd-pipeline
+
+spec:
+  tasks:
+
+    - name: cleanup
+      taskRef:
+        name: cleanup
+
+    - name: flake8
+      runAfter:
+        - cleanup
+      taskRef:
+        name: flake8
+
+    - name: test
+      runAfter:
+        - flake8
+      taskRef:
+        name: test
+
+    - name: buildah
+      runAfter:
+        - test
+      taskRef:
+        name: buildah
+
+    - name: deploy
+      runAfter:
+        - buildah
+      taskRef:
+        name: deploy
