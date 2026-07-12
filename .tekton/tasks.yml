@@ -3,25 +3,20 @@ kind: Task
 metadata:
   name: cleanup
 spec:
+  workspaces:
+    - name: source
   steps:
-    - name: cleanup
-      image: alpine
+    - name: remove
+      image: alpine:3
+      env:
+        - name: WORKSPACE_SOURCE_PATH
+          value: $(workspaces.source.path)
+      workingDir: $(workspaces.source.path)
+      securityContext:
+        runAsNonRoot: false
+        runAsUser: 0
       script: |
-        #!/bin/sh
-        echo "Cleaning workspace"
-        rm -rf /workspace/* || true
-
----
-
-apiVersion: tekton.dev/v1beta1
-kind: Task
-metadata:
-  name: nose-test
-spec:
-  steps:
-    - name: nose-test
-      image: python:3.11
-      script: |
-        #!/bin/sh
-        pip install -r requirements.txt
-        nose2
+        #!/usr/bin/env sh
+        set -eu
+        echo "Removing all files from ${WORKSPACE_SOURCE_PATH} ..."
+        rm -rf "${WORKSPACE_SOURCE_PATH:?}"/*
