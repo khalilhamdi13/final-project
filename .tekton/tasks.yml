@@ -15,12 +15,55 @@ spec:
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: nose-tests
+  name: test
 spec:
   steps:
-    - name: run-nose-tests
+    - name: nose-tests
       image: python:3.11
       script: |
         #!/bin/sh
         pip install -r requirements.txt
         nose2
+
+---
+
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: flake8
+spec:
+  steps:
+    - name: lint
+      image: python:3.11
+      script: |
+        #!/bin/sh
+        pip install flake8
+        flake8 .
+
+---
+
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: buildah
+spec:
+  steps:
+    - name: build
+      image: quay.io/buildah/stable
+      script: |
+        #!/bin/sh
+        echo "Building image"
+
+---
+
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: deploy
+spec:
+  steps:
+    - name: deploy
+      image: alpine
+      script: |
+        #!/bin/sh
+        echo "Deploying application"
