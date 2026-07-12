@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ci-cd-final-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ci-cd-final-project
+  template:
+    metadata:
+      labels:
+        app: ci-cd-final-project
+    spec:
+      containers:
+        - name: app
+          image: cd-final-project
+          ports:
+            - containerPort: 8000
